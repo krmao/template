@@ -1,9 +1,0 @@
-ext.finalName = 'spingboot-admin'
-ext.finalPort = "5385"
-apply from: "$rootProject.projectDir/gradle/script/docker.gradle"
-
-dependencies {
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
-    implementation group: 'de.codecentric', name: 'spring-boot-admin-starter-server', version: '2.2.4'
-    implementation group: 'org.springframework', name: 'spring-test', version: '5.3.8'
-}

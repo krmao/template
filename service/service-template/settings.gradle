@@ -1,3 +1,0 @@
-rootProject.name = "service-template"
-
-include(":app-template"); project(":app-template").projectDir = new File(settingsDir, "arsenal/apps/app-template")

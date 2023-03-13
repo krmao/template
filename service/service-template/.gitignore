@@ -1,7 +1,0 @@
-.gradle
-.idea
-*.iml
-build/
-local.properties
-arsenal/apps/app-template/src/main/resources/static/files
-classes

@@ -1,5 +1,0 @@
-Label,# Samples,Average,Median,90% Line,95% Line,99% Line,Min,Max,Error %,Throughput,Received KB/sec,Sent KB/sec
-Thread Group:HTTP Request,1000,8,7,11,14,18,5,83,0.000%,90.85953,153.81,14.73
-Thread Group:from=DST66228:192.168.21.94:5380,500,0,0,0,1,1,0,1,0.000%,45.77078,0.00,0.00
-Thread Group:from=LPT45573:10.38.114.39:5380,500,0,0,0,1,1,0,1,0.000%,45.84632,0.00,0.00
-TOTAL,2000,4,1,9,11,16,0,83,0.000%,181.71906,153.81,14.73

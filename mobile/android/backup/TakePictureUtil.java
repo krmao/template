@@ -1,4 +1,4 @@
-package com.julong.washer.utils;
+package com.xxx.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -22,8 +22,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.julong.washer.WasherApp;
-import com.julong.washer.info.Constants;
 
 import org.xutils.common.Callback;
 import org.xutils.common.task.Priority;
@@ -33,7 +31,6 @@ import org.xutils.x;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 public class TakePictureUtil {
     private Context context;
@@ -84,15 +81,27 @@ public class TakePictureUtil {
         }
         boolean isCameraParamsCorrect = true;
         Gson gson = new Gson();
-        try {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                CameraManager manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
-                if (manager != null) {
-                    String[] cameraIds = manager.getCameraIdList();
-                    if (cameraIds.length <= 0) {
-                        showUploadCompletelyDialog(null, "未检测到有效相机, 上传失败");
-                        return;
-                    }
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            CameraManager manager = null;
+            try {
+                manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (manager != null) {
+                String[] cameraIds;
+                try {
+                    cameraIds = manager.getCameraIdList();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    cameraIds = null;
+                }
+                if (cameraIds == null || cameraIds.length <= 0) {
+                    showUploadCompletelyDialog(null, "未检测到有效相机, 上传失败\n\n(注意:连接/断开相机需重启应用)");
+                    return;
+                }
+                try {
                     for (String cameraId : cameraIds) {
                         CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
                         // show all info
@@ -100,91 +109,119 @@ public class TakePictureUtil {
 
                         String SENSOR_INFO_PIXEL_ARRAY_SIZE = gson.toJson(characteristics.get(CameraCharacteristics.SENSOR_INFO_PIXEL_ARRAY_SIZE));
                         //noinspection ConstantConditions
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = SENSOR_INFO_PIXEL_ARRAY_SIZE.equalsIgnoreCase(""); // {"mHeight":5472,"mWidth":7296}  像素阵列大小
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = SENSOR_INFO_PIXEL_ARRAY_SIZE.equalsIgnoreCase("{\"mHeight\":480,\"mWidth\":640}"); // {"mHeight":5472,"mWidth":7296}  像素阵列大小
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", SENSOR_INFO_PIXEL_ARRAY_SIZE='" + SENSOR_INFO_PIXEL_ARRAY_SIZE + "'");
 
                         String SENSOR_INFO_ACTIVE_ARRAY_SIZE = gson.toJson(characteristics.get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE));
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = SENSOR_INFO_ACTIVE_ARRAY_SIZE.equalsIgnoreCase(""); // {"bottom":5472,"left":0,"right":7296,"top":0}
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = SENSOR_INFO_ACTIVE_ARRAY_SIZE.equalsIgnoreCase("{\"bottom\":480,\"left\":0,\"right\":640,\"top\":0}"); // {"bottom":5472,"left":0,"right":7296,"top":0}
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", SENSOR_INFO_ACTIVE_ARRAY_SIZE='" + SENSOR_INFO_ACTIVE_ARRAY_SIZE + "'");
 
                         String SENSOR_INFO_COLOR_FILTER_ARRANGEMENT = gson.toJson(characteristics.get(CameraCharacteristics.SENSOR_INFO_COLOR_FILTER_ARRANGEMENT));
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = SENSOR_INFO_COLOR_FILTER_ARRANGEMENT.equalsIgnoreCase("");
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = SENSOR_INFO_COLOR_FILTER_ARRANGEMENT.equalsIgnoreCase("null");
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", SENSOR_INFO_COLOR_FILTER_ARRANGEMENT='" + SENSOR_INFO_COLOR_FILTER_ARRANGEMENT + "'");
 
                         String SENSOR_INFO_EXPOSURE_TIME_RANGE = gson.toJson(characteristics.get(CameraCharacteristics.SENSOR_INFO_EXPOSURE_TIME_RANGE));
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = SENSOR_INFO_EXPOSURE_TIME_RANGE.equalsIgnoreCase(""); // {"mLower":10000,"mUpper":1000000000}
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = SENSOR_INFO_EXPOSURE_TIME_RANGE.equalsIgnoreCase("null"); // {"mLower":10000,"mUpper":1000000000}
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", SENSOR_INFO_EXPOSURE_TIME_RANGE='" + SENSOR_INFO_EXPOSURE_TIME_RANGE + "'");
 
                         String SENSOR_INFO_MAX_FRAME_DURATION = gson.toJson(characteristics.get(CameraCharacteristics.SENSOR_INFO_MAX_FRAME_DURATION));
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = SENSOR_INFO_MAX_FRAME_DURATION.equalsIgnoreCase(""); // 9000000000
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = SENSOR_INFO_MAX_FRAME_DURATION.equalsIgnoreCase("221811200"); // 9000000000
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", SENSOR_INFO_MAX_FRAME_DURATION='" + SENSOR_INFO_MAX_FRAME_DURATION + "'");
 
                         String SENSOR_INFO_PHYSICAL_SIZE = gson.toJson(characteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE));
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = SENSOR_INFO_PHYSICAL_SIZE.equalsIgnoreCase(""); // 9000000000
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = SENSOR_INFO_PHYSICAL_SIZE.equalsIgnoreCase("{\"mHeight\":6.1242065,\"mWidth\":6.1242065}"); // 9000000000
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", SENSOR_INFO_PHYSICAL_SIZE='" + SENSOR_INFO_PHYSICAL_SIZE + "'");
 
                         String SENSOR_INFO_SENSITIVITY_RANGE = gson.toJson(characteristics.get(CameraCharacteristics.SENSOR_INFO_SENSITIVITY_RANGE));
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = SENSOR_INFO_SENSITIVITY_RANGE.equalsIgnoreCase(""); // {"mLower":50,"mUpper":3500}
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = SENSOR_INFO_SENSITIVITY_RANGE.equalsIgnoreCase("null"); // {"mLower":50,"mUpper":3500}
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", SENSOR_INFO_SENSITIVITY_RANGE='" + SENSOR_INFO_SENSITIVITY_RANGE + "'");
 
                         String SENSOR_INFO_TIMESTAMP_SOURCE = gson.toJson(characteristics.get(CameraCharacteristics.SENSOR_INFO_TIMESTAMP_SOURCE));
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = SENSOR_INFO_TIMESTAMP_SOURCE.equalsIgnoreCase("");
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = SENSOR_INFO_TIMESTAMP_SOURCE.equalsIgnoreCase("0");
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", SENSOR_INFO_TIMESTAMP_SOURCE='" + SENSOR_INFO_TIMESTAMP_SOURCE + "'");
 
                         String SENSOR_INFO_WHITE_LEVEL = gson.toJson(characteristics.get(CameraCharacteristics.SENSOR_INFO_WHITE_LEVEL));
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = SENSOR_INFO_WHITE_LEVEL.equalsIgnoreCase("");
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = SENSOR_INFO_WHITE_LEVEL.equalsIgnoreCase("null");
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", SENSOR_INFO_WHITE_LEVEL='" + SENSOR_INFO_WHITE_LEVEL + "'");
 
                         String LENS_INFO_AVAILABLE_APERTURES = gson.toJson(characteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_APERTURES)); // 孔径
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = LENS_INFO_AVAILABLE_APERTURES.equalsIgnoreCase("");
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = LENS_INFO_AVAILABLE_APERTURES.equalsIgnoreCase("null");
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", LENS_INFO_AVAILABLE_APERTURES='" + LENS_INFO_AVAILABLE_APERTURES + "'");
 
                         String LENS_INFO_AVAILABLE_FOCAL_LENGTHS = gson.toJson(characteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS)); // 焦距
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = LENS_INFO_AVAILABLE_FOCAL_LENGTHS.equalsIgnoreCase("");
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = LENS_INFO_AVAILABLE_FOCAL_LENGTHS.equalsIgnoreCase("[35.0]");
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", LENS_INFO_AVAILABLE_FOCAL_LENGTHS='" + LENS_INFO_AVAILABLE_FOCAL_LENGTHS + "'");
 
                         String SCALER_AVAILABLE_MAX_DIGITAL_ZOOM = gson.toJson(characteristics.get(CameraCharacteristics.SCALER_AVAILABLE_MAX_DIGITAL_ZOOM)); // 最大数字缩放
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = SCALER_AVAILABLE_MAX_DIGITAL_ZOOM.equalsIgnoreCase("");
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = SCALER_AVAILABLE_MAX_DIGITAL_ZOOM.equalsIgnoreCase("3.0");
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", SCALER_AVAILABLE_MAX_DIGITAL_ZOOM='" + SCALER_AVAILABLE_MAX_DIGITAL_ZOOM + "'");
 
                         String REQUEST_AVAILABLE_CAPABILITIES = gson.toJson(characteristics.get(CameraCharacteristics.REQUEST_AVAILABLE_CAPABILITIES)); // 相机功能
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = REQUEST_AVAILABLE_CAPABILITIES.equalsIgnoreCase("");
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = REQUEST_AVAILABLE_CAPABILITIES.equalsIgnoreCase("[0]");
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", REQUEST_AVAILABLE_CAPABILITIES='" + REQUEST_AVAILABLE_CAPABILITIES + "'");
 
                         String CONTROL_AVAILABLE_SCENE_MODES = gson.toJson(characteristics.get(CameraCharacteristics.CONTROL_AVAILABLE_SCENE_MODES)); // 场景模式
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = CONTROL_AVAILABLE_SCENE_MODES.equalsIgnoreCase("");
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = CONTROL_AVAILABLE_SCENE_MODES.equalsIgnoreCase("[0]");
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", CONTROL_AVAILABLE_SCENE_MODES='" + CONTROL_AVAILABLE_SCENE_MODES + "'");
 
                         String STATISTICS_INFO_AVAILABLE_FACE_DETECT_MODES = gson.toJson(characteristics.get(CameraCharacteristics.STATISTICS_INFO_AVAILABLE_FACE_DETECT_MODES)); // 人脸检测模式
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = STATISTICS_INFO_AVAILABLE_FACE_DETECT_MODES.equalsIgnoreCase("");
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = STATISTICS_INFO_AVAILABLE_FACE_DETECT_MODES.equalsIgnoreCase("[0]");
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", STATISTICS_INFO_AVAILABLE_FACE_DETECT_MODES='" + STATISTICS_INFO_AVAILABLE_FACE_DETECT_MODES + "'");
 
                         String HOT_PIXEL_AVAILABLE_HOT_PIXEL_MODES = gson.toJson(characteristics.get(CameraCharacteristics.HOT_PIXEL_AVAILABLE_HOT_PIXEL_MODES)); // 热像素模式
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = HOT_PIXEL_AVAILABLE_HOT_PIXEL_MODES.equalsIgnoreCase("");
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = HOT_PIXEL_AVAILABLE_HOT_PIXEL_MODES.equalsIgnoreCase("null");
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", HOT_PIXEL_AVAILABLE_HOT_PIXEL_MODES='" + HOT_PIXEL_AVAILABLE_HOT_PIXEL_MODES + "'");
 
                         String FLASH_INFO_AVAILABLE = gson.toJson(characteristics.get(CameraCharacteristics.FLASH_INFO_AVAILABLE)); //  闪光灯
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = FLASH_INFO_AVAILABLE.equalsIgnoreCase("");
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = FLASH_INFO_AVAILABLE.equalsIgnoreCase("false");
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", FLASH_INFO_AVAILABLE='" + FLASH_INFO_AVAILABLE + "'");
 
                         String COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES = gson.toJson(characteristics.get(CameraCharacteristics.COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES)); // 像差模式(关/快速/高质量)
-                        if (isCameraParamsCorrect) isCameraParamsCorrect = COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES.equalsIgnoreCase("");
+                        if (isCameraParamsCorrect)
+                            isCameraParamsCorrect = COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES.equalsIgnoreCase("[1]");
                         Log.d("TakePictureUtil", "cameraId=" + cameraId + ", COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES='" + COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES + "'");
 
                         if (!isCameraParamsCorrect) break;
                     }
-                } else {
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    //noinspection UnusedAssignment
                     isCameraParamsCorrect = false;
+                    showUploadCompletelyDialog(null, "相机访问错误, 上传失败\n\n(注意:连接/断开相机需重启应用)");
+                    return;
                 }
             } else {
+                //noinspection UnusedAssignment
                 isCameraParamsCorrect = false;
+                showUploadCompletelyDialog(null, "设备获取错误, 上传失败");
+                return;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+            //noinspection UnusedAssignment
             isCameraParamsCorrect = false;
+            showUploadCompletelyDialog(null, "系统版本低于5, 上传失败");
+            return;
         }
+
         if (!isCameraParamsCorrect) {
-            showUploadCompletelyDialog(null, "不支持该相机型号, 上传失败");
+            showUploadCompletelyDialog(null, "不支持相机型号, 上传失败");
             return;
         }
 
@@ -256,7 +293,11 @@ public class TakePictureUtil {
         }
     }
 
-    private byte[] compressPicture(File pictureFile, float scale) {
+    /**
+     * @param doCompress false 跳过压缩, true 执行压缩
+     */
+    @SuppressWarnings("SameParameterValue")
+    private byte[] compressPicture(File pictureFile, float scale, boolean doCompress) {
         if (pictureFile == null || !pictureFile.exists()) return null;
 
         byte[] bytes = null;
@@ -264,7 +305,7 @@ public class TakePictureUtil {
         Bitmap scaledBitmap = null;
         ByteArrayOutputStream baos = null;
         try {
-            scaledBitmap = Bitmap.createScaledBitmap(fullBitmap, (int) (fullBitmap.getWidth() * scale), (int) (fullBitmap.getHeight() * scale), true);
+            scaledBitmap = !doCompress ? fullBitmap : Bitmap.createScaledBitmap(fullBitmap, (int) (fullBitmap.getWidth() * scale), (int) (fullBitmap.getHeight() * scale), true);
             baos = new ByteArrayOutputStream();
             scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             bytes = baos.toByteArray();
@@ -285,9 +326,9 @@ public class TakePictureUtil {
     }
 
     private void uploadPicture(File pictureFile) {
-        byte[] pictureByteArray = compressPicture(pictureFile, 0.5f);
+        byte[] pictureByteArray = compressPicture(pictureFile, 0.5f, false);
         if (pictureFile == null || !pictureFile.exists() || pictureByteArray == null || pictureByteArray.length <= 0) {
-            showUploadCompletelyDialog(false);
+            showUploadCompletelyDialog(false, "未检测到有效图片, 上传失败\n\n(注意:连接/断开相机需重启应用)");
             return;
         }
 

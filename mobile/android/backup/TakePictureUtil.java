@@ -328,7 +328,7 @@ public class TakePictureUtil {
     private void uploadPicture(File pictureFile) {
         byte[] pictureByteArray = compressPicture(pictureFile, 0.5f, false);
         if (pictureFile == null || !pictureFile.exists() || pictureByteArray == null || pictureByteArray.length <= 0) {
-            showUploadCompletelyDialog(false, "未检测到有效图片, 上传失败\n\n(注意:连接/断开相机需重启应用)");
+            showUploadCompletelyDialog(false, "未检测到有效图片, 上传失败");
             return;
         }
 

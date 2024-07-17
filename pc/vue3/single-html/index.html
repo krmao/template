@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--suppress HtmlUnknownTag, JSUnresolvedLibraryURL, CheckEmptyScriptTag -->
+<html lang="en">
+<head>
+    <title>Vue3 Single Html Test</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,  initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <script src="https://unpkg.com/element-plus"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/element-plus@1.0.2-beta.46/lib/index.full.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/qs/6.9.6/qs.min.js"
+            type="application/javascript"></script>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+</style>
+<body>
+<div style="width:100%;" id="app">
+    <div style="background: whitesmoke;width: 400px;height: auto;display: flex;flex-direction: column;align-items: flex-start;padding: 10px;margin: 10px;">
+        <el-input v-model="data.value" :placeholder="data.placeholder" style="width:1000px;"></el-input>
+        <el-button>Click Me</el-button>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    const {createApp, ref, reactive} = Vue
+    Object.assign(window, Vue);
+    const app = createApp({
+        setup() {
+            const data = reactive({
+                placeholder: 'Please input',
+                value: '',
+            });
+
+            const request = () => {
+                let postData = Qs.stringify({params: "",});
+                axios.post("https://xxxx.com", postData).then(response => {
+                    console.log(response);
+                }).catch(error => {
+                    console.log(error);
+                });
+            }
+
+            return {
+                data,
+                request,
+            }
+        },
+    });
+    app.use(ElementPlus).mount("#app");
+</script>

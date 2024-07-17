@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!--suppress HtmlUnknownTag, JSUnresolvedLibraryURL, CheckEmptyScriptTag -->
+<!--suppress HtmlUnknownTag, JSUnresolvedLibraryURL, CheckEmptyScriptTag, VueUnrecognizedSlot -->
 <html lang="en">
 <head>
     <title>Vue3 Single Html Test</title>
@@ -10,6 +10,7 @@
     <script src="https://unpkg.com/element-plus"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/element-plus@1.0.2-beta.46/lib/index.full.js"></script>
+    <script src="https://unpkg.com/@element-plus/icons-vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/qs/6.9.6/qs.min.js"
             type="application/javascript"></script>
@@ -25,19 +26,84 @@
     <div style="background: whitesmoke;width: 400px;height: auto;display: flex;flex-direction: column;align-items: flex-start;padding: 10px;margin: 10px;">
         <el-input v-model="data.value" :placeholder="data.placeholder" style="width:1000px;"></el-input>
         <el-button>Click Me</el-button>
+        <!-- 添加一些图标 -->
+        <delete-icon style="font-size: 12px; height: 12px;"></delete-icon>
+        <download-icon style="font-size: 12px;height: 12px;"></download-icon>
+        <plus-icon style="font-size: 12px;height: 12px;"></plus-icon>
+        <zoom-in-icon style="font-size: 12px;height: 12px;"></zoom-in-icon>
+        <ZoomIn style="font-size: 12px;height: 12px;"></ZoomIn>
+
     </div>
+    <el-upload action="#" list-type="picture-card" :auto-upload="false">
+        <el-icon>
+            <plus-icon/>
+        </el-icon>
+
+        <template #file="{ file }">
+            <div>
+                <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
+                <span class="el-upload-list__item-actions">
+          <span
+                  class="el-upload-list__item-preview"
+                  @click="handlePictureCardPreview(file)"
+          >
+            <el-icon><zoom-in/></el-icon>
+          </span>
+          <span
+                  v-if="!disabled"
+                  class="el-upload-list__item-delete"
+                  @click="handleDownload(file)"
+          >
+            <el-icon><Download/></el-icon>
+          </span>
+          <span
+                  v-if="!disabled"
+                  class="el-upload-list__item-delete"
+                  @click="handleRemove(file)"
+          >
+            <el-icon><Delete/></el-icon>
+          </span>
+        </span>
+            </div>
+        </template>
+    </el-upload>
+
+    <el-dialog v-model="dialogVisible">
+        <img w-full :src="dialogImageUrl" alt="Preview Image"/>
+    </el-dialog>
 </div>
 </body>
 </html>
 <script>
     const {createApp, ref, reactive} = Vue
     Object.assign(window, Vue);
+    const {ElInput} = ElementPlus;
+    const {Delete, Download, Plus, ZoomIn} = ElementPlusIconsVue;
+
+
     const app = createApp({
         setup() {
             const data = reactive({
                 placeholder: 'Please input',
                 value: '',
             });
+
+            const dialogImageUrl = ref('')
+            const dialogVisible = ref(false)
+            const disabled = ref(false)
+
+            const handleRemove = (file) => {
+                console.log(file)
+            }
+
+            const handlePictureCardPreview = (file) => {
+                dialogImageUrl.value = file.url
+                dialogVisible.value = true
+            }
+
+            const handleDownload = (file) => {
+                console.log(file)
+            }
 
             const request = () => {
                 let postData = Qs.stringify({params: "",});
@@ -51,8 +117,20 @@
             return {
                 data,
                 request,
+                handleDownload,
+                handlePictureCardPreview,
+                handleRemove,
+                disabled,
+                dialogVisible,
+                dialogImageUrl,
             }
         },
     });
+
+    app.component('el-input', ElInput);
+    app.component('delete-icon', Delete);
+    app.component('download-icon', Download);
+    app.component('plus-icon', Plus);
+    app.component('zoom-in-icon', ZoomIn);
     app.use(ElementPlus).mount("#app");
 </script>

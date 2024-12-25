@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <title>智能客服</title>
+  <script src="https://unpkg.com/vue@3.2.47/dist/vue.global.js"></script>
+
+  <style>
+      * {
+          padding: 0;
+          margin: 0;
+      }
+
+      html,
+      body {
+          width: 100%;
+          height: 100%;
+          background-color: #ffffef;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: flex-start;
+      }
+
+      #app {
+          width: 100%;
+          height: 100%;
+          background-color: #00008b11;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: flex-start;
+      }
+
+      #box1 {
+          display: flex;
+          background-color: #4caf50;
+          width: 1.875rem;
+          height: calc(1.875rem / 2);
+      }
+
+      #box2 {
+          display: flex;
+          background-color: #00008b;
+          width: 1.875rem;
+          height: calc(1.875rem / 2);
+          padding: 0;
+          margin: 0;
+          align-self: flex-end;
+      }
+
+      #someButton1 {
+          display: flex;
+          font-size: 16px;
+          border: none;
+          background-color: orange;
+          color: white;
+          cursor: pointer;
+          border-radius: 0.08rem;
+          margin-bottom: 0.2rem;
+          margin-top: 0.2rem;
+          padding: 0;
+      }
+
+      #someButton2 {
+          display: flex;
+          font-size: 16px;
+          cursor: pointer;
+          margin-bottom: 0.2rem;
+      }
+
+      #someButton3 {
+          display: flex;
+          font-size: 0.16rem;
+          cursor: pointer;
+          margin-bottom: 0.2rem;
+      }
+  </style>
+</head>
+
+<body>
+<div id="app">
+  <div id="box1"></div>
+  <div id="box2"></div>
+  <button id="someButton1" @click="handleJump1">点击进行跳转1</button>
+  <a id="someButton2" :href="linkUrl">点击进行跳转2(推荐: 字体应该使用 px)</a>
+  <a id="someButton3" :href="linkUrl">点击进行跳转3(不推荐: 字体不应该使用 rem)</a>
+</div>
+
+<script>
+  const { createApp, onMounted, onUnmounted } = Vue;
+
+  const App = {
+    setup() {
+      // 100px == 1rem, 字体依然用px, 其他都用 rem
+      const setRem = (designWidth = 375, baseSize = 100) => {
+        const setFontSize = () => {
+          const html = document.documentElement;
+          html.style.fontSize = `${(html.clientWidth / designWidth) * baseSize}px`;
+        };
+        setFontSize();
+        window.addEventListener("resize", setFontSize);
+        return () => window.removeEventListener("resize", setFontSize);
+      };
+
+      // 动态链接
+      const linkUrl = "smartcloud://wireless/robot?type=function&method=doSomething&params=encodeURIComponentJsonString";
+
+      // 跳转方法
+      const handleJump1 = () => {
+        const params = {
+          param0: "xxx",
+          param1: "xxx",
+          param2: "xxx",
+        };
+        const url =
+          "smartcloud://wireless/robot?type=function&method=doSomething&params=" +
+          encodeURIComponent(JSON.stringify(params));
+        window.postMessage(url);
+      };
+
+      // 设置 rem 并在销毁时解绑事件
+      onMounted(() => {
+        const removeResizeListener = setRem();
+        onUnmounted(removeResizeListener);
+      });
+
+      // 返回要绑定的数据
+      return {
+        handleJump1,
+        linkUrl,
+      };
+    },
+  };
+
+  // 创建并挂载 Vue 应用
+  createApp(App).mount("#app");
+</script>
+</body>
+
+</html>
